@@ -640,13 +640,191 @@ input[type="file"] {
 }
 
 /* Missing Preview Card Styles */
-.preview-card .card-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.2s; border-radius: 8px; font-size: 2rem; color: #fff; }
-.preview-card:hover .card-overlay { opacity: 1; }
-.preview-card .page-number { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.7); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+.preview-card .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: 0.2s;
+    border-radius: 8px;
+    font-size: 2rem;
+    color: #fff;
+}
+
+.preview-card:hover .card-overlay {
+    opacity: 1;
+}
+
+.preview-card .page-number {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
 
 
 /* Responsive & Compatibility Patches */
-@media (max-width: 960px) { body { overflow: auto; height: auto; } .app-layout { flex-direction: column; height: auto; } .editor-sidebar { width: 100%; height: auto; max-height: 60vh; border-right: none; border-bottom: 1px solid var(--border-soft); } .preview-stage { height: 60vh; width: 100%; border-top: 1px solid var(--border-soft); } }
-.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; text-align: center; color: var(--text-muted); width: 100%; } .empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.3; }
-.status-badge { font-size: 0.7rem; color: var(--brand-color); margin-left: auto; font-weight: 500; }
-.form-group > label { display: flex; justify-content: space-between; align-items: center; }
+@media (max-width: 960px) {
+    body {
+        overflow: auto;
+        height: auto;
+        /* Allow body to scroll */
+    }
+
+    .app-layout {
+        flex-direction: column;
+        height: auto;
+        overflow: visible;
+    }
+
+    /* Sidebar becomes top section */
+    .editor-sidebar {
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        max-height: none;
+        /* Let it grow with content or limit it if too long */
+        border-right: none;
+        border-bottom: 1px solid var(--border-soft);
+        overflow: visible;
+    }
+
+    .editor-content {
+        padding: 16px;
+        overflow: visible;
+        /* Let content flow */
+    }
+
+    /* Stack form groups */
+    .form-row {
+        flex-direction: row;
+        gap: 12px;
+    }
+
+    /* On very small screens, stack even the rows */
+    @media (max-width: 480px) {
+        .form-row {
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .w-auto {
+            width: 100%;
+        }
+    }
+
+    /* Action bar sticks to bottom of screen on mobile? 
+       Or maybe just bottom of sidebar. Let's keep it simple at sidebar bottom. */
+    .action-bar {
+        position: sticky;
+        bottom: 0;
+        z-index: 20;
+        background: var(--bg-sidebar);
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+        padding: 16px;
+    }
+
+    /* Preview Stage */
+    .preview-stage {
+        width: 100%;
+        height: auto;
+        min-height: 500px;
+        /* Give it space */
+        border-top: 1px solid var(--border-soft);
+        overflow: visible;
+    }
+
+    .preview-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        /* Smaller cards on mobile */
+        gap: 16px;
+        padding: 20px;
+        overflow: visible;
+    }
+
+    .preview-card {
+        max-width: 100%;
+        /* Fill grid cell */
+    }
+
+    /* Modal Mobile */
+    .modal-window {
+        width: 95%;
+        max-height: 90vh;
+        padding: 16px;
+    }
+
+    .modal-close-btn {
+        top: -10px;
+        right: -10px;
+        width: 24px;
+        height: 24px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Touch Targets & Accessibility for Tablet/Mobile */
+@media (max-width: 768px) {
+    input[type=range]::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+        margin-top: -8px;
+    }
+
+    .btn {
+        padding: 14px 20px;
+        /* Larger hit area */
+    }
+
+    .theme-option {
+        margin-bottom: 8px;
+        /* Spacing */
+    }
+
+    /* Adjust font sizes for readability */
+    .form-input,
+    .form-textarea,
+    .form-select {
+        font-size: 16px;
+        /* Avoid IOS zoom on focus */
+    }
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--text-muted);
+    width: 100%;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    opacity: 0.3;
+}
+
+.status-badge {
+    font-size: 0.7rem;
+    color: var(--brand-color);
+    margin-left: auto;
+    font-weight: 500;
+}
+
+.form-group>label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
